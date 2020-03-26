@@ -1,17 +1,47 @@
 const dbManager = require('../Database/db.manager');
 
+async function createUser(req, res) {
 
+    // CHECK IF THE REQUEST BODY IS EMPTY
+    if (!req.body) {
+        res.status(400).send({
+            message: "Request body is empty!!!!"
+        });
+        return;
+    }
 
+    // CREATING THE OBJECT TO PERSIST
+    const newUserObject = {
+        username: req.body.username,
+        creation_date: req.body.creation_date
+    }
+
+    // EXECUTING THE CREATE QUERY - INSERT THE OBJECT INTO DATABASE 
+    dbManager.User.create(newUserObject).then(
+        data => {
+            res.send(data);
+        }
+    ).catch(
+        e => {
+            // Print error on console
+            console.log(e);
+            // Send error message as a response 
+            res.status(500).send({
+                message: "Some error occurred"
+            });
+        }
+    );
+}
 
 //LEER TODOS LOS USUARIOS
-async function findAllUsers (req, res){
+async function findAllUsers(req, res) {
     try {
-        const users = await dbManager.User.findAll ();                
+        const users = await dbManager.User.findAll();
         res.json({
-                data: users
+            data: users
         });
 
-    } catch (e) {        
+    } catch (e) {
         console.log(e);
         res.status(500).send({
             message: e
@@ -21,18 +51,18 @@ async function findAllUsers (req, res){
 
 
 //Leer usuario por id
-async function findUserById (req, res){
+async function findUserById(req, res) {
     try {
-        const { idUser } = req.params;        
+        const { idUser } = req.params;
         const user = await dbManager.User.findOne({
             where: {
                 idUser: idUser
             }
-        });        
+        });
         res.json(user);
 
-    } catch (e) {        
-        console.log(e);        
+    } catch (e) {
+        console.log(e);
         res.status(500).send({
             message: e
         });
@@ -40,49 +70,49 @@ async function findUserById (req, res){
 }
 
 //Autenticar Usuario por sus credenciales
-async function authenticateUser (req,res){
-    try{
-        const {username,password} = req.params;
+async function authenticateUser(req, res) {
+    try {
+        const { username, password } = req.params;
         const user = await dbManager.User.findOne({
-            where:{
+            where: {
                 username: username,
                 password: password
             }
         })
-        if(user!=null){
+        if (user != null) {
             res.send(true);
         }
-        else{
+        else {
             res.send(false);
         }
-    }catch (e){
+    } catch (e) {
         console.log(e);
         res.status(500).send({
-            message:e
+            message: e
         });
     }
 }
 
 
 //Eliminar un Usuario
-async function deleteUser(req,res){
-    try{
-        const{username}=req.params;
+async function deleteUser(req, res) {
+    try {
+        const { username } = req.params;
         const user = await dbManager.User.destroy({
-            where:{
-                username=username
+            where: {
+                username = username
             }
-        })        
-        res.json(user);        
-    }catch (e){
+        })
+        res.json(user);
+    } catch (e) {
         console.log(e);
         res.status(500).send({
-            message:e
+            message: e
         });
     }
 }
 
-exports.findAllUsers=findAllUsers;
-exports.findUserById=findUserById;
-exports.authenticateUser=authenticateUser;
-exports.deleteUser=deleteUser;
+exports.findAllUsers = findAllUsers;
+exports.findUserById = findUserById;
+exports.authenticateUser = authenticateUser;
+exports.deleteUser = deleteUser;
