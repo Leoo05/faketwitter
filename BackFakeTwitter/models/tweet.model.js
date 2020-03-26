@@ -5,6 +5,9 @@ module.exports = (sequelize, Sequelize) =>{
             primaryKey: true,
             autoIncrement: true
         },
+        idUser: {
+            type: Sequelize.INTEGER,
+        },
         message: Sequelize.STRING,
         published_date: Sequelize.DATE,
     }, {
