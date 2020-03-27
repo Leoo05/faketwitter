@@ -1,9 +1,9 @@
 const dbManager = require('../Database/db.manager');
 
 /**
- * Inserta un nuevo seguidor
+ * Crea un nuevo mensaje
  */
-async function insertFollower(req, res) {
+async function createMessage(req, res) {
 
     // CHECK IF THE REQUEST BODY IS EMPTY
     if (!req.body) {
@@ -14,28 +14,29 @@ async function insertFollower(req, res) {
     }
 
     try {
-        const user = await dbManager.User.findOne({
+        const emitter = await dbManager.User.findOne({
             where: {
-                idUser: req.body.idUser
+                idEmitter: req.body.idEmitter
             }
         });
 
-        const followed = await dbManager.User.findOne({
+        const receiver = await dbManager.User.findOne({
             where: {
-                idFollowed: req.body.idFollowed
+                idReceiver: req.body.idReceiver
             }
         });
 
-        if (user != null && followed != null) {
+        if (emitter != null && receiver != null) {
             // CREATING THE OBJECT TO PERSIST
-            const newFollowerObject = {
-                idUser: req.body.idUser,
-                idFollowed: req.body.idFollowed,
+            const newMessageObject = {
+                idEmitter: req.body.idEmitter,
+                idReceiver: req.body.idReceiver,
+                message: req.body.message,
                 published_date: req.body.published_date
             }
 
             // EXECUTING THE CREATE QUERY - INSERT THE OBJECT INTO DATABASE 
-            dbManager.Follower.create(newFollowerObject).then(
+            dbManager.Message.create(newMessageObject).then(
                 data => {
                     res.send(data);
                 }
@@ -68,9 +69,9 @@ async function insertFollower(req, res) {
 
 
 /**
- * Encuentra todos los follower de un usuario
+ * Encuentra los mensajes entre un emisor y un receptor
  */
-async function findUserFollowers(req, res) {
+async function findMessages(req, res) {
 
     // CHECK IF THE REQUEST BODY IS EMPTY
     if (!req.body) {
@@ -81,14 +82,15 @@ async function findUserFollowers(req, res) {
     }
 
     try {
-        const followers = await dbManager.Follower.findAll({
+        const messages = await dbManager.Message.findAll({
             where: {
-                idUser: req.body.idUser
+                idEmitter: req.body.idEmitter,
+                idReceiver: req.body.idReceiver
             }
         });
 
         res.json({
-            data: followers
+            data: messages
         });
     } catch (error) {
         // Print error on console
@@ -100,5 +102,5 @@ async function findUserFollowers(req, res) {
     }
 }
 
-exports.insertFollower = insertFollower;
-exports.findUserFollowers = findUserFollowers;
+exports.createMessage = createMessage;
+exports.findMessages = findMessages;
