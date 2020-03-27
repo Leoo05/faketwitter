@@ -12,7 +12,7 @@ const User = UserModel (sequelizeConnection, Sequelize);
 const Tweet = TweetModel (sequelizeConnection, Sequelize);
 
 //CREATE RELATIONS BETWEEN MODELS
-User.hasMany(Tweet, { foreignKey: 'idTweet', sourceKey: 'idUser' });
+User.hasMany(Tweet, { foreignKey: 'idUser', sourceKey: 'idUser' });
 Tweet.belongsTo( User, { foreignKey: 'idUser', sourceKey: 'idTweet' });
 
 //GROUP MODELS
