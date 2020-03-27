@@ -1,9 +1,9 @@
 const dbManager = require('../Database/db.manager');
 
 /**
- * Crea un nuevo tweet
+ * Inserta un nuevo seguidor
  */
-async function createTweet(req, res) {
+async function insertFollower(req, res) {
 
     // CHECK IF THE REQUEST BODY IS EMPTY
     if (!req.body) {
@@ -14,22 +14,28 @@ async function createTweet(req, res) {
     }
 
     try {
-        const users = await dbManager.User.findOne({
+        const user = await dbManager.User.findOne({
             where: {
                 idUser: req.body.idUser
             }
         });
-        console.log(users);
-        if (users != null) {
+
+        const followed = await dbManager.User.findOne({
+            where: {
+                idFollowed: req.body.idFollowed
+            }
+        });
+
+        if (user != null && followed != null) {
             // CREATING THE OBJECT TO PERSIST
-            const newTweetObject = {
+            const newFollowerObject = {
                 idUser: req.body.idUser,
-                message: req.body.message,
+                idFollowed: req.body.idFollowed,
                 published_date: req.body.published_date
             }
 
             // EXECUTING THE CREATE QUERY - INSERT THE OBJECT INTO DATABASE 
-            dbManager.Tweet.create(newTweetObject).then(
+            dbManager.Follower.create(newFollowerObject).then(
                 data => {
                     res.send(data);
                 }
@@ -60,30 +66,11 @@ async function createTweet(req, res) {
 
 }
 
-/**
- * Encuentra todos los Tweet en la base de datos
- */
-async function findAllTweets(req, res) {
-    try {
-        const users = await dbManager.Tweet.findAll();
-
-        res.json({
-            data: users
-        });
-    } catch (error) {
-        // Print error on console
-        console.log(e);
-        // Send error message as a response 
-        res.status(500).send({
-            message: "Some error occurred"
-        });
-    }
-}
 
 /**
- * Encuentra todos los Tweet de un usuario
+ * Encuentra todos los follower de un usuario
  */
-async function findUserTweets(req, res) {
+async function findUserFollowers(req, res) {
 
     // CHECK IF THE REQUEST BODY IS EMPTY
     if (!req.body) {
@@ -94,14 +81,14 @@ async function findUserTweets(req, res) {
     }
 
     try {
-        const users = await dbManager.Tweet.findAll({
+        const followers = await dbManager.Follower.findAll({
             where: {
                 idUser: req.body.idUser
             }
         });
 
         res.json({
-            data: users
+            data: followers
         });
     } catch (error) {
         // Print error on console
@@ -113,41 +100,5 @@ async function findUserTweets(req, res) {
     }
 }
 
-
-/**
- * Elimina un Tweet
- */
-async function deleteTweet(req, res) {
-
-    // CHECK IF THE REQUEST BODY IS EMPTY
-    if (!req.body) {
-        res.status(400).send({
-            message: "Request body is empty!!!!"
-        });
-        return;
-    }
-
-    try {
-        const tweet = await dbManager.Tweet.destroy({
-            where: {
-                idTweet: req.body.idTweet
-            }
-        });
-
-        res.json({
-            data: tweet
-        });
-    } catch (error) {
-        // Print error on console
-        console.log(e);
-        // Send error message as a response 
-        res.status(500).send({
-            message: "Some error occurred"
-        });
-    }
-}
-
-exports.createTweet = createTweet;
-exports.findAllTweets = findAllTweets;
-exports.findUserTweets = findUserTweets;
-exports.deleteTweet = deleteTweet;
+exports.insertFollower = insertFollower;
+exports.findUserFollowers = findUserFollowers;
