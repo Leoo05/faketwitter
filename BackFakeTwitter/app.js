@@ -4,7 +4,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/user.route');
+var tweetRouter = require('./routes/tweet.route');
 
 var app = express();
 const dbManager = require('./Database/db.manager');
@@ -17,6 +18,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/tweets',tweetRouter);
 
 dbManager.sequelizeConnection.authenticate()
     .then(() => {

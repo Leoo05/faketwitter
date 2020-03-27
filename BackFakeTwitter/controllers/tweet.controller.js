@@ -60,7 +60,7 @@ async function findAllTweets(req, res){
 /**
  * Encuentra todos los tweets de un usuario
  */
-async function findAllTweets(req, res){
+async function findUserTweets(req, res){
 
     // CHECK IF THE REQUEST BODY IS EMPTY
     if (!req.body) {
@@ -94,7 +94,7 @@ async function findAllTweets(req, res){
 /**
  * Elimina un Tweet
  */
-async function findAllTweets(req, res){
+async function deleteTweet(req, res){
 
     // CHECK IF THE REQUEST BODY IS EMPTY
     if (!req.body) {
@@ -123,3 +123,8 @@ async function findAllTweets(req, res){
         });
     }
 }
+
+exports.createTweet = createTweet;
+exports.findAllTweets = findAllTweets;
+exports.findUserTweets = findUserTweets;
+exports.deleteTweet = deleteTweet;
