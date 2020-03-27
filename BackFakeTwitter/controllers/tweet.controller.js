@@ -14,13 +14,13 @@ async function createTweet(req, res) {
     }
 
     try {
-        const tweets = await dbManager.Tweet.findAll({
+        const users = await dbManager.User.findOne({
             where: {
                 idUser: req.body.idUser
             }
         });
-
-        if (tweets != null) {
+        console.log(users);
+        if (users != null) {
             // CREATING THE OBJECT TO PERSIST
             const newTweetObject = {
                 idUser: req.body.idUser,
@@ -61,14 +61,14 @@ async function createTweet(req, res) {
 }
 
 /**
- * Encuentra todos los tweets en la base de datos
+ * Encuentra todos los users en la base de datos
  */
 async function findAllTweets(req, res) {
     try {
-        const tweets = await dbManager.Tweet.findAll();
+        const users = await dbManager.Tweet.findAll();
 
         res.json({
-            data: tweets
+            data: users
         });
     } catch (error) {
         // Print error on console
@@ -81,7 +81,7 @@ async function findAllTweets(req, res) {
 }
 
 /**
- * Encuentra todos los tweets de un usuario
+ * Encuentra todos los users de un usuario
  */
 async function findUserTweets(req, res) {
 
@@ -94,14 +94,14 @@ async function findUserTweets(req, res) {
     }
 
     try {
-        const tweets = await dbManager.Tweet.findAll({
+        const users = await dbManager.Tweet.findAll({
             where: {
                 idUser: req.body.idUser
             }
         });
 
         res.json({
-            data: tweets
+            data: users
         });
     } catch (error) {
         // Print error on console
