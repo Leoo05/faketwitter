@@ -6,6 +6,8 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/user.route');
 var tweetRouter = require('./routes/tweet.route');
+var followerRouter = require('./routes/follower.route');
+var messageRouter = require('./routes/message.route');
 
 var app = express();
 const dbManager = require('./Database/db.manager');
@@ -19,6 +21,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/tweets',tweetRouter);
+app.use('/followers',followerRouter);
+app.use('/messages',messageRouter);
 
 dbManager.sequelizeConnection.authenticate()
     .then(() => {
