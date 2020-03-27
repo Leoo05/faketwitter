@@ -3,44 +3,67 @@ const dbManager = require('../Database/db.manager');
 /**
  * Crea un nuevo tweet
  */
-async function createTweet (req, res) {
-    
+async function createTweet(req, res) {
+
     // CHECK IF THE REQUEST BODY IS EMPTY
     if (!req.body) {
         res.status(400).send({
-          message: "Request body is empty!!!!"
+            message: "Request body is empty!!!!"
         });
         return;
     }
-    
-    // CREATING THE OBJECT TO PERSIST
-    const newTweetObject = {
-        idUser: req.body.idUser,
-        message: req.body.message,
-        published_date: req.body.published_date
-    }
-    
-    // EXECUTING THE CREATE QUERY - INSERT THE OBJECT INTO DATABASE 
-    dbManager.Tweet.create(newTweetObject).then (
-        data => {
-            res.send (data);
-        }
-    ).catch (
-        e => {
-            // Print error on console
-            console.log(e);
-            // Send error message as a response 
+
+    try {
+        const tweets = await dbManager.Tweet.findAll({
+            where: {
+                idUser: req.body.idUser
+            }
+        });
+
+        if (tweets != null) {
+            // CREATING THE OBJECT TO PERSIST
+            const newTweetObject = {
+                idUser: req.body.idUser,
+                message: req.body.message,
+                published_date: req.body.published_date
+            }
+
+            // EXECUTING THE CREATE QUERY - INSERT THE OBJECT INTO DATABASE 
+            dbManager.Tweet.create(newTweetObject).then(
+                data => {
+                    res.send(data);
+                }
+            ).catch(
+                e => {
+                    // Print error on console
+                    console.log(e);
+                    // Send error message as a response 
+                    res.status(500).send({
+                        message: "Some error occurred"
+                    });
+                }
+            );
+        } else {
             res.status(500).send({
-                message: "Some error occurred"
+                message: "User not found"
             });
         }
-    );
+
+    } catch (error) {
+        // Print error on console
+        console.log(e);
+        // Send error message as a response 
+        res.status(500).send({
+            message: "Some error occurred"
+        });
+    }
+
 }
 
 /**
  * Encuentra todos los tweets en la base de datos
  */
-async function findAllTweets(req, res){
+async function findAllTweets(req, res) {
     try {
         const tweets = await dbManager.Tweet.findAll();
 
@@ -60,12 +83,12 @@ async function findAllTweets(req, res){
 /**
  * Encuentra todos los tweets de un usuario
  */
-async function findUserTweets(req, res){
+async function findUserTweets(req, res) {
 
     // CHECK IF THE REQUEST BODY IS EMPTY
     if (!req.body) {
         res.status(400).send({
-          message: "Request body is empty!!!!"
+            message: "Request body is empty!!!!"
         });
         return;
     }
@@ -73,7 +96,7 @@ async function findUserTweets(req, res){
     try {
         const tweets = await dbManager.Tweet.findAll({
             where: {
-                idUser : req.body.idUser
+                idUser: req.body.idUser
             }
         });
 
@@ -94,12 +117,12 @@ async function findUserTweets(req, res){
 /**
  * Elimina un Tweet
  */
-async function deleteTweet(req, res){
+async function deleteTweet(req, res) {
 
     // CHECK IF THE REQUEST BODY IS EMPTY
     if (!req.body) {
         res.status(400).send({
-          message: "Request body is empty!!!!"
+            message: "Request body is empty!!!!"
         });
         return;
     }
@@ -107,7 +130,7 @@ async function deleteTweet(req, res){
     try {
         const tweet = await dbManager.Tweet.destroy({
             where: {
-                idTweet : req.body.idTweet
+                idTweet: req.body.idTweet
             }
         });
 
