@@ -13,6 +13,7 @@ async function createUser(req, res) {
     // CREATING THE OBJECT TO PERSIST
     const newUserObject = {
         username: req.body.username,
+        password: req.body.password,
         creation_date: req.body.creation_date
     }
 
@@ -78,7 +79,7 @@ async function authenticateUser(req, res) {
                 username: username,
                 password: password
             }
-        })
+        });
         if (user != null) {
             res.send(true);
         }
@@ -100,10 +101,10 @@ async function deleteUser(req, res) {
         const { username } = req.params;
         const user = await dbManager.User.destroy({
             where: {
-                username = username
+                username: username
             }
-        })
-        res.json(user);
+        });
+        res.send('USUARIO'+username+'ELIMINADO');
     } catch (e) {
         console.log(e);
         res.status(500).send({
@@ -112,6 +113,7 @@ async function deleteUser(req, res) {
     }
 }
 
+exports.createUser = createUser;
 exports.findAllUsers = findAllUsers;
 exports.findUserById = findUserById;
 exports.authenticateUser = authenticateUser;
