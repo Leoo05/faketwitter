@@ -7,11 +7,13 @@ const sequelizeConnection = require('../Database/db.connection');
 const UserModel = require("../models/user.model");
 const TweetModel = require("../models/tweet.model");
 const FollowerModel = require("../models/follower.model");
+const MessageModel = require("../models/message.model");
 
 //INITIALIZE MODELS
 const User = UserModel (sequelizeConnection, Sequelize);
 const Tweet = TweetModel (sequelizeConnection, Sequelize);
 const Follower = FollowerModel (sequelizeConnection, Sequelize);
+const Message = MessageModel (sequelizeConnection, Sequelize);
 
 //CREATE RELATIONS BETWEEN MODELS
 User.hasMany(Tweet, { foreignKey: 'idUser', sourceKey: 'idUser' });
@@ -24,6 +26,7 @@ const models = {
   User: User,
   Tweet: Tweet,
   Follower: Follower,
+  Message: Message
 };
 
 

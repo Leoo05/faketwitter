@@ -22,7 +22,7 @@ async function insertFollower(req, res) {
 
         const followed = await dbManager.User.findOne({
             where: {
-                idFollowed: req.body.idFollowed
+                idUser: req.body.idFollowed
             }
         });
 
@@ -55,7 +55,7 @@ async function insertFollower(req, res) {
             });
         }
 
-    } catch (error) {
+    } catch (e) {
         // Print error on console
         console.log(e);
         // Send error message as a response 
@@ -83,14 +83,14 @@ async function findUserFollowers(req, res) {
     try {
         const followers = await dbManager.Follower.findAll({
             where: {
-                idUser: req.body.idUser
+                idFollowed: req.body.idUser
             }
         });
 
         res.json({
             data: followers
         });
-    } catch (error) {
+    } catch (e) {
         // Print error on console
         console.log(e);
         // Send error message as a response 

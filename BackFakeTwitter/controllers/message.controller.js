@@ -16,13 +16,13 @@ async function createMessage(req, res) {
     try {
         const emitter = await dbManager.User.findOne({
             where: {
-                idEmitter: req.body.idEmitter
+                idUser: req.body.idEmitter
             }
         });
 
         const receiver = await dbManager.User.findOne({
             where: {
-                idReceiver: req.body.idReceiver
+                idUser: req.body.idReceiver
             }
         });
 
@@ -56,7 +56,7 @@ async function createMessage(req, res) {
             });
         }
 
-    } catch (error) {
+    } catch (e) {
         // Print error on console
         console.log(e);
         // Send error message as a response 
