@@ -126,11 +126,11 @@ async function deleteTweet(req, res) {
         });
         return;
     }
-
+    const {idTweet} = req.params;
     try {
         const tweet = await dbManager.Tweet.destroy({
             where: {
-                idTweet: req.body.idTweet
+                idTweet: idTweet
             }
         });
 
