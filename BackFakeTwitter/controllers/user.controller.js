@@ -113,8 +113,30 @@ async function deleteUser(req, res) {
     }
 }
 
+
+//Obtiene el usuario por su username
+async function findUserByUsername(req, res) {
+    try {
+        const { username } = req.params;
+        const user = await dbManager.User.findOne({
+            where: {
+                username: username
+            }
+        });
+        res.json(user);
+
+    } catch (e) {
+        console.log(e);
+        res.status(500).send({
+            message: e
+        });
+    }
+}
+
+
 exports.createUser = createUser;
 exports.findAllUsers = findAllUsers;
 exports.findUserById = findUserById;
 exports.authenticateUser = authenticateUser;
 exports.deleteUser = deleteUser;
+exports.findUserByUsername = findUserByUsername;

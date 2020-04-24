@@ -70,20 +70,19 @@ async function insertFollower(req, res) {
 /**
  * Encuentra todos los follower de un usuario
  */
-async function findUserFollowers(req, res) {
-
+async function findUserFollowers(req, res) {    
     // CHECK IF THE REQUEST BODY IS EMPTY
-    if (!req.body) {
+    if (!req.params) {
         res.status(400).send({
             message: "Request body is empty!!!!"
         });
         return;
     }
-
+    const {idUser} = req.params;
     try {
         const followers = await dbManager.Follower.findAll({
             where: {
-                idFollowed: req.body.idUser
+                idFollowed: idUser
             }
         });
 
