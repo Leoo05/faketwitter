@@ -8,11 +8,11 @@ router.post('/',userController.createUser);
 /* GET users listing. */
 router.get('/', userController.findAllUsers);
 
+router.get('/findUserByUsername/:username' , userController.findUserByUsername);
+
 router.get('/:idUser', userController.findUserById);
 
 router.get('/:username/:password' , userController.authenticateUser);
-
-//router.get('/:username' , userController.findUserByUsername);
 
 router.delete('/:username',userController.deleteUser);
 
