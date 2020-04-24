@@ -14,13 +14,13 @@ async function createTweet(req, res) {
     }
 
     try {
-        const users = await dbManager.User.findOne({
+        const tweets = await dbManager.User.findOne({
             where: {
                 idUser: req.body.idUser
             }
         });
-        console.log(users);
-        if (users != null) {
+        console.log(tweets);
+        if (tweets != null) {
             // CREATING THE OBJECT TO PERSIST
             const newTweetObject = {
                 idUser: req.body.idUser,
@@ -65,10 +65,10 @@ async function createTweet(req, res) {
  */
 async function findAllTweets(req, res) {
     try {
-        const users = await dbManager.Tweet.findAll();
+        const tweets = await dbManager.Tweet.findAll();
 
         res.json({
-            data: users
+            data: tweets
         });
     } catch (error) {
         // Print error on console
@@ -86,22 +86,22 @@ async function findAllTweets(req, res) {
 async function findUserTweets(req, res) {
 
     // CHECK IF THE REQUEST BODY IS EMPTY
-    if (!req.body) {
+    if (!req.params) {
         res.status(400).send({
             message: "Request body is empty!!!!"
         });
         return;
     }
-
+    const {idUser} = req.params;
     try {
-        const users = await dbManager.Tweet.findAll({
+        const tweets = await dbManager.Tweet.findAll({
             where: {
-                idUser: req.body.idUser
+                idUser: idUser
             }
         });
 
         res.json({
-            data: users
+            data: tweets
         });
     } catch (error) {
         // Print error on console

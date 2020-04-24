@@ -8,7 +8,7 @@ router.post('/',tweetController.createTweet);
 /* GET users listing. */
 router.get('/', tweetController.findAllTweets);
 
-router.get('/findUserTweets', tweetController.findUserTweets);
+router.get('/findUserTweets/:idUser', tweetController.findUserTweets);
 
 router.delete('/deleteTweet',tweetController.deleteTweet);
 
