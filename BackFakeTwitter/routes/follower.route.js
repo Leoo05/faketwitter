@@ -5,6 +5,6 @@ const followerController = require('../controllers/follower.controller');
 
 router.post('/',followerController.insertFollower);
 
-router.get('/', followerController.findUserFollowers);
+router.get('/:idUser', followerController.findUserFollowers);
 
 module.exports = router;
