@@ -10,7 +10,7 @@ router.get('/', tweetController.findAllTweets);
 
 router.get('/findUserTweets/:idUser', tweetController.findUserTweets);
 
-router.delete('/deleteTweet',tweetController.deleteTweet);
+router.delete('/deleteTweet/:idTweet',tweetController.deleteTweet);
 
 
 module.exports = router;
