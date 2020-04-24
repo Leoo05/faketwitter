@@ -12,6 +12,8 @@ router.get('/:idUser', userController.findUserById);
 
 router.get('/:username/:password' , userController.authenticateUser);
 
+//router.get('/:username' , userController.findUserByUsername);
+
 router.delete('/:username',userController.deleteUser);
 
 
